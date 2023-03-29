@@ -12,18 +12,18 @@ import { useEffect } from 'react';
 
 const Todo = () => {
     
-    
+    const [id, setId] = useState(1);
     const [modifyIsOpen, setModifyIsOpen] = useState(false);
     const [removeIsOpen, setRemoveIsOpen] = useState(false);
     const [modalContent, setModalContent] = useState('');
+    const storedTodoList = JSON.parse(localStorage.getItem('todoList'));
     const todoId = useRef(1);
     
-    const storedTodoList = JSON.parse(localStorage.getItem('todoList'));
     useEffect(() => {
-        
         if (storedTodoList) {
             setTodoList(storedTodoList);
-        }
+            todoId.current = storedTodoList.length + 1;
+        } 
     }, []);
     
 
@@ -89,6 +89,7 @@ const Todo = () => {
             date: `${now.getFullYear()}.${now.getMonth() + 1}.${now.getDate()}(${convertDay(now.getDay())})`,
             time: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
         }
+        setId(todoId.current++);
         setTodoList([...todoList, todo]);
         setInput({...input, content: ''});
 
@@ -155,13 +156,6 @@ const Todo = () => {
     const removeCloseModal = () => {
         setRemoveIsOpen(false);
     }
-
-    
-
-    const loadTodoList = () => {
-        
-    }
-
 
     return (
         <>
