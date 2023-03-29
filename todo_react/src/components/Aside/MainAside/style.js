@@ -1,24 +1,24 @@
 import { css } from "@emotion/react";
 
 export const OutAside = css`
-    position: fixed;
-    top: 0;
-    left: 0px;
+    position: absolute;
+    top: 0px;
+    left: 0%;
     z-index: 99;
     width: 300px;
-    height: 100%;
+    height: 800px;
     transition: left 1s ease;
 `;
 
 export const OpenAside = css`
-    position: fixed;
+    position: absolute;
     top: 0;
     left: -300px;
     z-index: 99;
     width: 300px;
-    height: 100%;
+    height: 800px;
     transition: left 1s ease;
-`;
+    `;
 
 
 export const inOutButton = css`
@@ -42,4 +42,6 @@ export const inOutButton = css`
     &:active {
         background-color: #dbdbdb;
     }
-`
+    `
+
+    

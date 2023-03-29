@@ -8,17 +8,23 @@ import { BsCardChecklist } from "react-icons/bs";
 import * as S from "./style";
 import { useState } from "react";
 
+
 const MainAside = ({ chlidren }) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
     const navigate = useNavigate();
 
     const asideOpen = () => {
         setIsOpen(!isOpen);
     };
 
+    const closeAside = () => {
+        setIsOpen(!isOpen);
+    }
+
+
     return (
         <>
-            <aside css={isOpen? S.OpenAside: S.OutAside}>
+            <aside css={isOpen? S.OpenAside: S.OutAside} onClick={closeAside}>
                 <Navigation
                     activeItemId="/"
                     onSelect={({ itemId }) => {
