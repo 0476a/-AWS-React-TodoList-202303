@@ -9,38 +9,26 @@ const User = () => {
     const [modifyFlag, setModifyFlag] = useState(false);
     const [introModifyFlag, setIntroModifyFlag] = useState(false);
 
-    const storedSaveUser = JSON.parse(localStorage.getItem('userInfo'));
-    
-    useEffect(() => {
-        if(storedSaveUser){
-            setSaveUser(storedSaveUser)
-        }
-    }, []);
-    
-    const user = {
-        name: '',
-        eMail: '',
-        phone: '',
-        github: '',
-    }
+    const [saveUser, setSaveUser] = useState(
+        JSON.parse(
+            localStorage.getItem('saveUser') === null
+                ? ""
+                : localStorage.getItem('saveUser')
+        )
+    );
 
-    const [inputs, setInputs] = useState(user);
-    const [saveUser, setSaveUser] = useState(null);
-
-    const inputHandler = (e) => {
-        const { name, value } = e.target;
-        setInputs({...inputs, [name]: value});
-    } 
 
     const Modify = () => {
         setModifyFlag(true);
     };
 
+    const Input = (e) => {
+        const { name, value } = e.target;
+        setSaveUser({...saveUser, [name]: value});
+    }
+
     const Save = () => {
-        const user = {
-            ...inputs
-        };
-        setSaveUser(user);
+        setSaveUser(saveUser);
         setModifyFlag(false);
     };
 
@@ -52,11 +40,14 @@ const User = () => {
         setIntroModifyFlag(false);
     };
 
+
+
     useEffect(
         () => {
-            localStorage.setItem("userInfo", JSON.stringify(saveUser));
+            localStorage.setItem("saveUser", JSON.stringify(saveUser));
         }, [saveUser]
     );
+
 
     return (
         <>
@@ -85,24 +76,26 @@ const User = () => {
                             <div css={S.InfoContent}>
                                 <label for="name">Name</label>
                                 {modifyFlag ? (
-                                    <input type="text" css={S.InfoInput} onChange={inputHandler} name="name"/>
+                                    <input type="text" css={S.InfoInput} onChange={Input} name="name"/>
                                 ) : (
                                     <input
                                         type="text"
                                         css={S.InfoInput}
                                         disabled
+                                        value={saveUser.name}
                                     />
                                 )}
                             </div>
                             <div css={S.InfoContent}>
                                 <label for="e-mail">e-Mail</label>
                                 {modifyFlag ? (
-                                    <input type="text" css={S.InfoInput} onChange={inputHandler} name="eMail"/>
+                                    <input type="text" css={S.InfoInput} onChange={Input} name="eMail"/>
                                 ) : (
                                     <input
                                         type="text"
                                         css={S.InfoInput}
                                         disabled
+                                        value={saveUser.eMail}
                                     />
                                 )}
                             </div>
@@ -111,24 +104,26 @@ const User = () => {
                             <div css={S.InfoContent}>
                                 <label for="phone">Phone</label>
                                 {modifyFlag ? (
-                                    <input type="text" css={S.InfoInput} onChange={inputHandler} name="phone"/>
+                                    <input type="text" css={S.InfoInput} onChange={Input} name="phone"/>
                                 ) : (
                                     <input
                                         type="text"
                                         css={S.InfoInput}
                                         disabled
+                                        value={saveUser.phone}
                                     />
                                 )}
                             </div>
                             <div css={S.InfoContent}>
                                 <label for="github">GitHub</label>
                                 {modifyFlag ? (
-                                    <input type="text" css={S.InfoInput} onChange={inputHandler} name="github"/>
+                                    <input type="text" css={S.InfoInput} onChange={Input} name="github"/>
                                 ) : (
                                     <input
                                         type="text"
                                         css={S.InfoInput}
                                         disabled
+                                        value={saveUser.github}
                                     />
                                 )}
                             </div>
@@ -148,9 +143,9 @@ const User = () => {
                             )}
                         </h1>
                         {introModifyFlag ? (
-                            <textarea css={S.ItroduceInput}></textarea>
+                            <textarea css={S.ItroduceInput} ></textarea>
                         ) : (
-                            <textarea css={S.ItroduceInput} disabled></textarea>
+                            <textarea css={S.ItroduceInput} disabled ></textarea>
                         )}
                     </div>
                 </div>
