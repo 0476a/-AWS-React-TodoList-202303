@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 /** @jsxImportSource @emotion/react */
 import * as S from "./style";
 import { BiPencil } from "react-icons/bi";
@@ -10,25 +10,43 @@ const User = () => {
     const [introModifyFlag, setIntroModifyFlag] = useState(false);
 
     const [saveUser, setSaveUser] = useState(
-        JSON.parse(
-            localStorage.getItem('saveUser') === null
-                ? ""
-                : localStorage.getItem('saveUser')
-        )
+        JSON.parse(localStorage.getItem('saveUser')) || {}
     );
 
+    const [saveIntro, setSaveIntro] = useState(
+        JSON.parse(localStorage.getItem('saveIntro')) || {}
+    );
+
+    useEffect(
+        () => {
+            localStorage.setItem("saveUser", JSON.stringify(saveUser));
+        },[saveUser]
+    );
+
+    useEffect(
+        () => {
+            localStorage.setItem("saveIntro", JSON.stringify(saveIntro));
+        },[saveIntro]
+    );
+
+
+
+    const Input = (e) => {
+        const { name, value } = e.target;
+        setSaveUser({...saveUser, [name]: value});
+    };
+
+    const ItroInput = (e) => {
+        const { name, value } = e.target;
+        setSaveIntro({...saveIntro, [name]: value});
+    }
 
     const Modify = () => {
         setModifyFlag(true);
     };
 
-    const Input = (e) => {
-        const { name, value } = e.target;
-        setSaveUser({...saveUser, [name]: value});
-    }
 
     const Save = () => {
-        setSaveUser(saveUser);
         setModifyFlag(false);
     };
 
@@ -36,18 +54,10 @@ const User = () => {
         setIntroModifyFlag(true);
     };
 
+
     const IntroSave = () => {
         setIntroModifyFlag(false);
     };
-
-
-
-    useEffect(
-        () => {
-            localStorage.setItem("saveUser", JSON.stringify(saveUser));
-        }, [saveUser]
-    );
-
 
     return (
         <>
@@ -143,9 +153,9 @@ const User = () => {
                             )}
                         </h1>
                         {introModifyFlag ? (
-                            <textarea css={S.ItroduceInput} ></textarea>
+                            <textarea css={S.ItroduceInput} onChange={ItroInput} name="intro"></textarea>
                         ) : (
-                            <textarea css={S.ItroduceInput} disabled ></textarea>
+                            <textarea css={S.ItroduceInput} disabled value={saveIntro.intro}></textarea>
                         )}
                     </div>
                 </div>
