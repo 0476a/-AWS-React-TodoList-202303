@@ -8,11 +8,10 @@ import { TiTrash } from 'react-icons/ti';
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
+import { motion } from "framer-motion"
 
 
 const Todo = () => {
-    
-    const [id, setId] = useState(1);
     const [modifyIsOpen, setModifyIsOpen] = useState(false);
     const [removeIsOpen, setRemoveIsOpen] = useState(false);
     const [modalContent, setModalContent] = useState('');
@@ -20,9 +19,10 @@ const Todo = () => {
     const todoId = useRef(1);
     
     useEffect(() => {
-        if (storedTodoList) {
+        if (storedTodoList && storedTodoList.length > 0) {
             setTodoList(storedTodoList);
-            todoId.current = storedTodoList.length + 1;
+            const lastItem = storedTodoList[storedTodoList.length - 1]
+            todoId.current = lastItem.id + 1;
         } 
     }, []);
     
@@ -56,7 +56,6 @@ const Todo = () => {
     useEffect(
         () => {
             localStorage.setItem("todoList", JSON.stringify(todoList));
-            
         }, [todoList]
     );
 
@@ -89,7 +88,6 @@ const Todo = () => {
             date: `${now.getFullYear()}.${now.getMonth() + 1}.${now.getDate()}(${convertDay(now.getDay())})`,
             time: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
         }
-        setId(todoId.current++);
         setTodoList([...todoList, todo]);
         setInput({...input, content: ''});
 
@@ -159,70 +157,79 @@ const Todo = () => {
 
     return (
         <>
-            <div css={S.MainContainer}>
-                <header css={S.MainHeader}>
-                    <h1 css={S.MainTitle}>ToDo</h1>
-                    <div css={S.TodoInputContainer}>
-                        <div css={S.InputIcon}><RiFileLine /></div>
-                        <input type="text" css={S.TodoInput} placeholder="Please enter todo..." onChange={onChange} onKeyUp={onKeyUp} value={input.content}/>
-                        <button css={S.AddButton} onClick={onAdd}><BiPlus /></button>
-                    </div>
-                </header>
-                <ul css={S.TodoListContainer}>
-                    {todoList.map(
-                        todo => {
-                            return(
-                                <li css={S.TodoContents}>
-                                    <div css={S.ContentHeader}>
-                                        <div css={S.TodoDate}>{todo.date}</div>
-                                        <div css={S.TodoTime}>{todo.time}</div>
-                                    </div>
-                                    <div css={S.ContentMain}>
-                                        <div>{todo.content}</div>
-                                    </div>
-                                    <div css={S.ContentFooter}>
-                                        <button css={S.ActiveButton} onClick = {() => {modifyOpenModal(todo.id)}}><BiPen /></button>
-                                        <button css={S.ActiveButton} onClick = {() => {removeOpenModal(todo.id)}}><TiTrash/></button>
-                                    </div>   
-                                </li>
-                            );
-                        }
-                    )}
-                </ul>
-            </div>
-            {modifyIsOpen ? 
-                <div css={S.modalContainer}>
-                    <div css={S.modelBox}>
-                        <header css={S.modalHeader}>
-                            <h1 css={S.modalTitle}>'Todo 수정'</h1>
-                        </header>
-                        <main css={S.modalMain}>
-                            <input css={S.modifyModalInput} type="text" onChange={contentChange} onKeyUp={onSubmitKeyup} defaultValue={modifyTodo.content}/>
-                        </main>
-                        <footer css={S.modalFooter}>
-                            <button css={S.modalButton} onClick={onSubmit}>확인</button>
-                            <button css={S.modalButton} onClick={modifyCloseModal}>취소</button>
-                        </footer>
-                    </div>
-                </div> : ''
-            }
-            {removeIsOpen ? 
-                <div css={S.modalContainer}>
-                    <div css={S.modelBox}>
-                        <header css={S.modalHeader}>
-                            <h1 css={S.modalTitle}>'Todo 삭제'</h1>
-                        </header>
-                        <main css={S.modalMain}>
-                            <p css={S.removeMessage}>Todo를 삭제하시겠습니까?</p>
-                        </main>
-                        <footer css={S.modalFooter}>
-                            <button css={S.modalButton} onClick ={() => {onRemove(removeTodo.id)}}>확인</button>
-                            <button css={S.modalButton} onClick={removeCloseModal}>취소</button>
-                        </footer>
-                    </div>
-                </div> : ''
-            }
-            
+            <motion.div 
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                duration: 2,
+                delay: 0.5,
+                ease: [0, 0.71, 0.2, 1.01]
+                }}
+            >
+                <div css={S.MainContainer}>
+                    <header css={S.MainHeader}>
+                        <h1 css={S.MainTitle}>ToDo</h1>
+                        <div css={S.TodoInputContainer}>
+                            <div css={S.InputIcon}><RiFileLine /></div>
+                            <input type="text" css={S.TodoInput} placeholder="Please enter todo..." onChange={onChange} onKeyUp={onKeyUp} value={input.content}/>
+                            <button css={S.AddButton} onClick={onAdd}><BiPlus /></button>
+                        </div>
+                    </header>
+                    <ul css={S.TodoListContainer}>
+                        {todoList.map(
+                            todo => {
+                                return(
+                                    <li css={S.TodoContents}>
+                                        <div css={S.ContentHeader}>
+                                            <div css={S.TodoDate}>{todo.date}</div>
+                                            <div css={S.TodoTime}>{todo.time}</div>
+                                        </div>
+                                        <div css={S.ContentMain}>
+                                            <div>{todo.content}</div>
+                                        </div>
+                                        <div css={S.ContentFooter}>
+                                            <button css={S.ActiveButton} onClick = {() => {modifyOpenModal(todo.id)}}><BiPen /></button>
+                                            <button css={S.ActiveButton} onClick = {() => {removeOpenModal(todo.id)}}><TiTrash/></button>
+                                        </div>   
+                                    </li>
+                                );
+                            }
+                        )}
+                    </ul>
+                </div>
+                {modifyIsOpen ? 
+                    <div css={S.modalContainer}>
+                        <div css={S.modelBox}>
+                            <header css={S.modalHeader}>
+                                <h1 css={S.modalTitle}>'Todo 수정'</h1>
+                            </header>
+                            <main css={S.modalMain}>
+                                <input css={S.modifyModalInput} type="text" onChange={contentChange} onKeyUp={onSubmitKeyup} defaultValue={modifyTodo.content}/>
+                            </main>
+                            <footer css={S.modalFooter}>
+                                <button css={S.modalButton} onClick={onSubmit}>확인</button>
+                                <button css={S.modalButton} onClick={modifyCloseModal}>취소</button>
+                            </footer>
+                        </div>
+                    </div> : ''
+                }
+                {removeIsOpen ? 
+                    <div css={S.modalContainer}>
+                        <div css={S.modelBox}>
+                            <header css={S.modalHeader}>
+                                <h1 css={S.modalTitle}>'Todo 삭제'</h1>
+                            </header>
+                            <main css={S.modalMain}>
+                                <p css={S.removeMessage}>Todo를 삭제하시겠습니까?</p>
+                            </main>
+                            <footer css={S.modalFooter}>
+                                <button css={S.modalButton} onClick ={() => {onRemove(removeTodo.id)}}>확인</button>
+                                <button css={S.modalButton} onClick={removeCloseModal}>취소</button>
+                            </footer>
+                        </div>
+                    </div> : ''
+                } 
+            </motion.div>  
         </>
     );
 };

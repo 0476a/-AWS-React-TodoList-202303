@@ -1,8 +1,8 @@
 import { css, Global } from "@emotion/react";
 import { Route, Routes } from "react-router-dom";
 import MainAside from "./components/Aside/MainAside/MainAside";
-import { Container } from "./pages/Todo/style";
 import Todo from "./pages/Todo/Todo";
+import User from "./pages/User/User";
 import { reset } from "./styles/Global/reset";
 /** @jsxImportSource @emotion/react */
 
@@ -32,6 +32,7 @@ function App() {
                 <MainAside />
                 <Routes>
                     <Route path="/todo" Component={Todo}/>
+                    <Route path="/user" Component={User}/>
                 </Routes>
             </div>
         </>

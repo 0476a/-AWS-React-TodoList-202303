@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css";
 import { HiHome } from "react-icons/hi";
 import { BsCardChecklist } from "react-icons/bs";
+import { BiUser } from 'react-icons/bi';
 import * as S from "./style";
 import { useState } from "react";
 
@@ -35,6 +36,11 @@ const MainAside = ({ chlidren }) => {
                             title: "Home",
                             itemId: "/",
                             elemBefore: () => <HiHome />,
+                        },
+                        {
+                            title: "User Information",
+                            itemId: "/user",
+                            elemBefore: () => <BiUser />,
                         },
                         {
                             title: "TodoList",

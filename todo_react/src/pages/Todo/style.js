@@ -66,7 +66,7 @@ export const AddButton = css`
     font-weight: 600;
     cursor: pointer;
 
-    background-color: white;
+    background-color: #12121200;
     &:hover {
         background-color: #fafafa;
     }
@@ -133,6 +133,16 @@ export const ContentMain = css`
     word-break: keep-all;
     line-height: 25px;
     height: 130px;
+    word-wrap: break-word;
+    overflow: auto;
+    &::-webkit-scrollbar {
+    width: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+    background-color: #dbdbdb;
+    border-radius: 5px;
+    }
 `;
 
 export const ContentFooter = css`

@@ -8,6 +8,8 @@ export const OutAside = css`
     width: 300px;
     height: 800px;
     transition: left 1s ease;
+    background-color: white;
+    box-shadow: 1px 0px 5px 1px #dbdbdb;
 `;
 
 export const OpenAside = css`
@@ -18,7 +20,10 @@ export const OpenAside = css`
     width: 300px;
     height: 800px;
     transition: left 1s ease;
+    background-color: white;
+    box-shadow: 1px 0px 5px 1px #dbdbdb;
     `;
+
 
 
 export const inOutButton = css`
@@ -35,7 +40,8 @@ export const inOutButton = css`
     border-bottom-right-radius: 20px;
     text-align: center;
     cursor: pointer;
-    background-color: #ffffff00;
+    background-color: #12121200;
+    color: black;
     &:hover {
         background-color: #eee;
     }
